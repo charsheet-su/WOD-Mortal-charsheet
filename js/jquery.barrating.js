@@ -26,7 +26,7 @@
                 if (self.options.theme !== '') {
                     classes.push('br-theme-' + self.options.theme);
                 }
-                
+
                 self.$elem.wrap($('<div />', {
                     'class': classes.join(' ')
                 }));
@@ -149,7 +149,7 @@
             // apply style by setting classes on elements
             var applyStyle = function($w) {
                 // remove classes
-                $w.find('a').removeClass('br-selected br-current');
+                //$w.find('a').removeClass('br-selected br-current');
 
                 // add classes
                 $w.find('img[data-rating-value="' + self.$elem.data('barrating').currentRatingValue + '"]')
@@ -157,9 +157,9 @@
                     .attr('src',self.options.selectedImage);
 
                 // add classes
-                $w.find('a[data-rating-value="' + self.$elem.data('barrating').currentRatingValue + '"]')
-                    .addClass('br-selected br-current')[nextAllorPreviousAll()]()
-                    .addClass('br-selected');
+                //$w.find('a[data-rating-value="' + self.$elem.data('barrating').currentRatingValue + '"]')
+                //    .addClass('br-selected br-current')[nextAllorPreviousAll()]()
+                //    .addClass('br-selected');
             };
 
             // handle click events

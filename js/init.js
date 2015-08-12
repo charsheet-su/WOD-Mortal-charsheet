@@ -331,7 +331,6 @@ function load_all() {
     deferreds.push(a);
     load_custom_props(a);
 
-    set_dots_fields();
 
     //when all settings are loaded, we load charsheet data:
     $.when.all(deferreds).then(function () {
@@ -343,6 +342,7 @@ function load_all() {
 
         $.when.all(deferreds).then(function () {
             //when everything is loaded, we display it
+            set_dots_fields();
             loadingPannel.hide();
             $('.list-align').css('display', 'block');
         });
