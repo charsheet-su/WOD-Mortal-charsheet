@@ -72,7 +72,10 @@
 }
 
 .list-inner {
-    padding: 65px; /*for background */
+    padding-left: 60px;
+    padding-right: 55px;
+    padding-top: 60px;
+
     font-size: 0; /* to avoid margins for inline divs*/
     position: absolute;
     top: 0;

@@ -26,24 +26,21 @@
     text-decoration: none;
     height: 14px;
     width: 14px;
-    font-size: 18px;
-    margin-right: 2px;
+    font-size: 16px;
     float: left;
+    color: #000;
 }
 
 .br-wrapper-f .br-widget a:after {
     content: "A";
-    color: #000;
 }
 
 .br-wrapper-f .br-widget a.br-active:after {
     content: "B";
-    color: #390000;
 }
 
 .br-wrapper-f .br-widget a.br-selected:after {
     content: "B";
-    color: #390000;
 }
 
 .br-wrapper-f .br-widget .br-current-rating {
@@ -74,23 +71,20 @@
     height: 18px;
     width: 14px;
     font-size: 20px;
-    margin-right: 2px;
     float: left;
+    color: #000;
 }
 
 .br-wrapper-f2 .br-widget a:after {
     content: "C";
-    color: #000;
 }
 
 .br-wrapper-f2 .br-widget a.br-active:after {
     content: "D";
-    color: #390000;
 }
 
 .br-wrapper-f2 .br-widget a.br-selected:after {
     content: "D";
-    color: #390000;
 }
 
 .br-wrapper-f2 .br-widget .br-current-rating {
