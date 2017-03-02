@@ -1,0 +1,33 @@
+const
+  knowledges    = require('./abilities/knowledges.json'),
+  skills        = require('./abilities/skills.json'),
+  talents       = require('./abilities/talents.json'),
+  backgrounds   = require('./advantages/backgrounds.json'),
+  numina        = require('./advantages/numina.json'),
+  virtues       = require('./advantages/virtues.json'),
+  mental        = require('./attributes/mental.json'),
+  physical      = require('./attributes/physical.json'),
+  social        = require('./attributes/social.json'),
+  nature        = require('./basic/nature.json'),
+  knowledgesSec = require('./secondary/knowledges.json'),
+  skillsSec     = require('./secondary/skills.json'),
+  talentsSec    = require('./secondary/talents.json'),
+  flaws         = require('./flaws.json'),
+  merits        = require('./merits.json');
+
+module.exports = {
+  knowledges,
+  skills,
+  talents,
+  backgrounds,
+  numina,
+  virtues,
+  mental,
+  physical,
+  social,
+  nature,
+  demeanor: nature,
+  secondary: {knowledges: knowledgesSec, skills: skillsSec, talents: talentsSec},
+  flaws,
+  merits,
+};

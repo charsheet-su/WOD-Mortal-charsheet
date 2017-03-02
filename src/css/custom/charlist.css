@@ -1,22 +1,23 @@
 @font-face {
     font-family: Percolator;
-    src: url(../fonts/Percolator.otf);
+    src: url(../../../fonts/Percolator.otf);
 }
 
 @font-face {
     font-family: "Percolator expert";
-    src: url("../fonts/Percolator-expert.otf");
+    src: url("../../../fonts/Percolator-expert.otf");
 }
 
 @font-face {
     font-family: "Goudy Old Style";
-    src: url("../fonts/Goudy%20Old%20Style%20Regular.ttf");
+    src: url("../../../fonts/Goudy-Old-Style-Regular.ttf");
 }
 
 .bg-image
 {
     width: 100%;
 }
+
 .main-header {
     font-family: Percolator;
     text-align: center;
@@ -121,7 +122,7 @@ body {
 }
 
 .editable-click, a.editable-click, a.editable-click:hover {
-    border-bottom: none;
+    border-bottom: none !important;
 }
 
 .list-sep {
