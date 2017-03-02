@@ -1,3 +1,2 @@
-*/.idea
-*/shit
-*/src
+.idea
+node_modules

@@ -2,14 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU">
 <head profile="http://gmpg.org/xfn/11">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
+    <script src="lib/js/index.js"></script>
+    <link href="lib/css/style.min.css" rel="stylesheet">
     <!-- momentjs -->
-    <script src="x-editable/moment.min.js"></script>
-
-    <!-- select2 -->
-    <link href="x-editable/select2.css" rel="stylesheet">
-    <script src="x-editable/select2.js"></script>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -17,31 +13,6 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-    <!-- bootstrap-datetimepicker
-    <link href="x-editable/datetimepicker.css" rel="stylesheet">
-    <script src="x-editable/bootstrap-datetimepicker.js"></script>
-    -->
-    <!-- x-editable (bootstrap 3) -->
-    <link href="x-editable/bootstrap-editable.css" rel="stylesheet">
-    <script src="x-editable/bootstrap-editable.js"></script>
-
-    <!-- select2 bootstrap -->
-    <link href="x-editable/select2-bootstrap.css" rel="stylesheet">
-
-    <!-- typeaheadjs -->
-    <link href="x-editable/typeahead.js-bootstrap.css" rel="stylesheet">
-    <script src="x-editable/typeahead.js"></script>
-    <link href="css/list1.css" rel="stylesheet">
-    <link href="css/list2.css" rel="stylesheet">
-    <link href="css/list3.css" rel="stylesheet">
-    <link href="css/list4.css" rel="stylesheet">
-    <link href="css/dots.css" rel="stylesheet">
-    <link href="css/charlist.css" rel="stylesheet">
-    <link href="css/print.css" rel="stylesheet">
-    <script src="js/jquery.barrating.js"></script>
     <title>Mortal Character sheet</title>
 </head>
 <body>
@@ -61,7 +32,7 @@
     <div class="prop">Nature:
     </div>
     <div class="prop_value">
-            <span data-name="nature" data-type="select" data-value="5" data-source="get/basic/nature.json" data-pk="1"
+            <span data-name="nature" data-type="select" data-value="5" data-pk="1"
                   data-title="Select nature"></span>
     </div>
 
@@ -79,7 +50,7 @@
     <div class="prop">Demeanor:
     </div>
     <div class="prop_value">
-            <span data-name="demeanor" data-type="select" data-value="5" data-source="get/basic/nature.json" data-pk="1"
+            <span data-name="demeanor" data-type="select" data-value="5" data-pk="1"
                   data-title="Select Demeanor"></span></div>
 
     <div class="prop">Sex:
@@ -670,7 +641,7 @@
 
                 <div class="file_upload"><span class="btn-file btn btn-default hidden-print">Choose image
                     <input type="file" id="group_chart"/></span>
-                    <span class="btn btn-default hidden-print" onclick="remove_image('group_chart')">Remove image</span>
+                    <span class="btn btn-default hidden-print" onclick="removeImage('group_chart')">Remove image</span>
                 </div>
             </div>
         </div>
@@ -682,7 +653,7 @@
                 <div class="file_upload"><span class="btn btn-default btn-file hidden-print">Choose image
                     <input type="file" id="character_sketch"/></span>
                     <span class="btn btn-default hidden-print"
-                          onclick="remove_image('character_sketch')">Remove image</span>
+                          onclick="removeImage('character_sketch')">Remove image</span>
                 </div>
             </div>
         </div>
@@ -693,10 +664,5 @@
 <div class="container theme-showcase hidden-print useful_things" role="main">
     <!--here will be different useful things - revisions, comments, print mode-->
 </div>
-<!--load all charsheet data, character data, useful things-->
-<script src="js/init.js"></script>
-<!--load print mode-->
-<script src="js/mode.js"></script>
-<script src="js/images.js"></script>
 </body>
 </html>
