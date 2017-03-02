@@ -76,5 +76,6 @@ $('document').ready(() => {
     readURL(this, 'character_sketch');
   });
 
+  window.removeImage = removeImage;
 
 });

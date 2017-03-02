@@ -142,7 +142,7 @@ function sendDots(attr, value) {
       // POST failed...
     });
 }
-
+window.sendDots = sendDots;
 
 function createDots(mainContainer, name, elClass, caption, points) {
   elClass = elClass || 'attr';
@@ -451,6 +451,7 @@ function loadSaved() {
     .catch(err=>ErrorPannel.show(JSON.stringify(err)));
 }
 
+window.loadSaved = loadSaved;
 
 function loadUseful() {
   if (checkDevel()) {
