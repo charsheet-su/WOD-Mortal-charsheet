@@ -1,6 +1,7 @@
-const Promise   = require('bluebird'),
-      $         = require('jquery'),
-      sheetData = require('../../data/index');
+const Promise        = require('bluebird'),
+      $              = require('jquery'),
+      sheetData      = require('../../data/index'),
+      requestPromise = require('request-promise');
 
 /**
  * check if script is running from development environment
@@ -94,26 +95,52 @@ function sendDots(attr, value) {
     ErrorPannel.show('You can not edit revision data! If you want it - restore revision and edit it.');
     return;
   }
-  const formData = new FormData();
-  formData.append('name', attr);
-  formData.append('value', value);
-  $.ajax({
-    url: '/api/save/',
-    formData,
-    contentType: false,
-    processData: false,
-    type: 'POST',
-    success(data) {
-      console.info(data);
+  /*
+   const formData = new FormData();
+   formData.append('name', attr);
+   formData.append('value', value);
+   $.ajax({
+   url: '/api/save/',
+   formData,
+   contentType: false,
+   processData: false,
+   type: 'POST',
+   success(data) {
+   console.info(data);
+   if (data.error !== undefined) {
+   ErrorPannel.show(data.error);
+
+   }
+   },
+   error(data) {
+   alert(`Error saving ${attr}!`);
+   },
+   });*/
+  const options = {
+    method: 'POST',
+    uri: `${location.protocol}//${window.location.hostname}/api/save/`,
+    form: {
+      name: attr, value,
+    },
+    json: true,
+    headers: {
+      /* 'content-type': 'application/x-www-form-urlencoded' */ // Set automatically
+    },
+  };
+
+  requestPromise(options)
+    .then((data)=> {
+
       if (data.error !== undefined) {
         ErrorPannel.show(data.error);
 
       }
-    },
-    error(data) {
-      alert(`Error saving ${attr}!`);
-    },
-  });
+      // POST succeeded...
+    })
+    .catch((err)=> {
+      ErrorPannel.show(JSON.stringify(err));
+      // POST failed...
+    });
 }
 
 
@@ -376,68 +403,72 @@ function setEditableFields() {
 }
 
 function loadSaved() {
-  return new Promise((resolve)=> {
-    if (checkDevel()) {
-      resolve();// do not load for development environment
-      return;
-    }
-    $.get('/api/load')
-      .success((data) => {
-          if (data.error !== undefined) {
-            ErrorPannel.show(data.error);
-            return;
-          }
-          $.each(data, (index, val) => {
-              if (index === 'char_name') {
-                document.title = `${val} - CharSheet.su`;
-              }
-              if (index === 'character_sketch') {
-                $('img[class="character_sketch"]').attr('src', val).css('display', 'block');
-              }
-              if (index === 'group_chart') {
-                $('img[class="group_chart"]').attr('src', val).css('display', 'block');
-              }
-              // load editables
+  if (checkDevel()) {
+    // do not load for development environment
+    return Promise.resolve();
+  }
+  const options = {
+    uri: `${location.protocol}//${window.location.hostname}/api/load`,
+    json: true, // Automatically parses the JSON string in the response
+  };
 
-              let a = $(`span[data-name="${index}"]`);
-              if (a !== undefined && val) {
-                a.editable('setValue', val);
-              }
+  return requestPromise(options)
+    .then((data)=> {
+        if (data.error !== undefined) {
+          ErrorPannel.show(data.error);
+          return;
+        }
+        $.each(data, (index, val) => {
+            if (index === 'char_name') {
+              document.title = `${val} - CharSheet.su`;
+            }
+            if (index === 'character_sketch') {
+              $('img[class="character_sketch"]').attr('src', val).css('display', 'block');
+            }
+            if (index === 'group_chart') {
+              $('img[class="group_chart"]').attr('src', val).css('display', 'block');
+            }
+            // load editables
 
-              // try to set dots
-              a = $(`select[name="${index}"]`);
+            let a = $(`span[data-name="${index}"]`);
+            if (a !== undefined && val) {
+              a.editable('setValue', val);
+            }
 
-              if (a !== undefined && a.is('select')) {
-                // console.log(`Setting select  ${index} to value ${val}`);
-                a.val(val).change();
+            // try to set dots
+            a = $(`select[name="${index}"]`);
 
-                a.barrating('set', val);
-              }
-            },
-          );
-          resolve();
-        },
-      );
-  });
+            if (a !== undefined && a.is('select')) {
+              // console.log(`Setting select  ${index} to value ${val}`);
+              a.val(val).change();
+
+              a.barrating('set', val);
+            }
+          },
+        );
+      },
+    )
+    .catch(err=>ErrorPannel.show(JSON.stringify(err)));
 }
 
 
 function loadUseful() {
   if (checkDevel()) {
-    return;
+    return Promise.resolve();
   }// do not load for development environment
-  $.ajax({
-    url: '/js/useful.php',
-    type: 'get',
-    contentType: false,
-    processData: false,
-    success(data) {
+
+
+  const options = {
+    uri: `${location.protocol}//${window.location.hostname}/js/useful.php`,
+    json: false, // Automatically parses the JSON string in the response
+  };
+
+  return requestPromise(options)
+    .then((data)=> {
       $('.useful_things').html(data);
-    },
-    error(data) {
-      alert('Error loading useful things!');
-    },
-  });
+    })
+    .catch(err=>
+      alert(`Error loading useful things! ${JSON.stringify(err)}`));
 }
 
 
