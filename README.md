@@ -1,5 +1,7 @@
 # WOD-Mortal-charsheet
 
+[![Build Status](https://travis-ci.org/jehy/WOD-Mortal-charsheet.svg?branch=master)](https://travis-ci.org/jehy/WOD-Mortal-charsheet)
+
 It is the first character sheet, created for [Charsheet.su](http://charsheet.su).   
 It is based on wonderful [Mr Gone's characters heets](http://mrgone.rocksolidshells.com/) 
  so credit for design goes to him.

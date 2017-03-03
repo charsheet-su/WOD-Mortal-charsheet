@@ -10,7 +10,7 @@
     "lint": "./node_modules/eslint/bin/eslint.js ./src/js/images.js ./src/js/index.js ./src/js/init.js ./src/js/mode.js",
     "build": "./node_modules/gulp/bin/gulp.js build-prod",
     "build-dev": "./node_modules/gulp/bin/gulp.js build-dev",
-    "prepublish": "npm run compile",
+    "prepublish": "npm run build",
     "test": "npm run build-dev && npm run lint",
     "update-dev": "git pull origin master && npm run build-dev && chown charsheet:charsheet . -R",
     "update-prod": "git pull origin master && npm run build && chown charsheet:charsheet . -R"
