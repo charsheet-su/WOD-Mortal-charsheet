@@ -7,7 +7,6 @@ require('bootstrap');
 require('./images');
 require('./jquery.barrating');
 require('./init');
-require('./mode');
 
 
 require('./x-editable/bootstrap-datetimepicker');
