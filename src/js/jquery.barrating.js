@@ -315,7 +315,7 @@
       };
 
       const setupHandlers = function (readonly) {
-        $elements = self.$widget.find('a');
+        const $elements = self.$widget.find('a');
 
         if (fastClicks) {
           fastClicks($elements);
@@ -354,7 +354,7 @@
       };
 
       this.readonly = function (state) {
-        if (typeof state !== 'boolean' || getData('readOnly') == state) return;
+        if (typeof state !== 'boolean' || getData('readOnly') === state) return;
 
         setupHandlers(state);
         setData('readOnly', state);
