@@ -41,7 +41,6 @@ Contents of `/src`:
 * `js` - different javascript.
   * `images.js` - used for handling images - uploading, removing.
   * `jquery.barrating.js` - JQuery bar rating, modified for printing.
-  * `mode.js` - used to switch from print mode to edit mode.
   * `x-editable` - X-editable js without any modifications.
   * `index.js` - combines all js above.
   
