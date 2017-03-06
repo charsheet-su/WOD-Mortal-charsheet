@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/jehy/WOD-Mortal-charsheet.svg?branch=master)](https://travis-ci.org/jehy/WOD-Mortal-charsheet)
 
 It is the first character sheet, created for [Charsheet.su](http://charsheet.su).   
-It is based on wonderful [Mr Gone's characters heets](http://mrgone.rocksolidshells.com/) 
+It is based on wonderful [Mr Gone's character sheets](http://mrgone.rocksolidshells.com/) 
  so credit for design goes to him.
 
 ##What I used for this character sheet:
@@ -13,7 +13,7 @@ It is based on wonderful [Mr Gone's characters heets](http://mrgone.rocksolidshe
 - [X-editable](https://vitalets.github.io/x-editable/)   
 - [Jquery bar rating](http://antenna.io/demo/jquery-bar-rating/examples/)
 
-Latest version is built using Node.js, gulp, broserify and babel - if you don`t know
+Latest version is built using Node.js, gulp, broserify and babel. If you don`t know
 Node.js, you can make your own sheet in simple HTML, CSS and JS.
 
 Version of this sheet without node.js can be found 
@@ -24,6 +24,11 @@ make new character sheets - of cause, those will be added to web site.
 ##Contents of the project:
 * `/src` contains source code and css of th project
 * `/lib` contains built and minified version of code (after you build it)
+* `data` - folder for json files which contain data for this sheet -
+ for example, list of traits, attributes or skills.
+ Also contains `mock.json` - mock sheet data for testing.
+* `fonts`, `img` - self described folders.
+
 
 Contents of `/src`:
 * `css`
@@ -33,9 +38,6 @@ Contents of `/src`:
     * `dots.css` - css for displaying dots. Suddenly, yeah?
     * `list1.css`, `list2.css`, etc - css, grouped by the number of the list.
     * `print.css` - special styles for printing - hide elements, make font smaller, etc.
-* `fonts`, `img` - self described folders.
-* `data` - folder for json files which contain data for this sheet -
- for example, list of traits, attributes or skills.
 * `js` - different javascript.
   * `images.js` - used for handling images - uploading, removing.
   * `jquery.barrating.js` - JQuery bar rating, modified for printing.
@@ -45,17 +47,19 @@ Contents of `/src`:
   
 Of cause, for saving and loading your character sheet data you will need
  to publish your repository on [Charsheet.su](http://charsheet.su)
-and use it's api - but you will be able to develop anything without it.
+and use it's api - but you will be able to develop without it.
 
 ##Getting started:
 
-1. Clone \ Fork a project
+1. Clone \ Fork this project
 2. Run `npm run build-dev` to build JS and CSS
-3. Edit!
+3. Open `index.html` browser (it will use mocked sheet data)
+3. Edit any HTML, JS and CSS from `/src`!
+4. Please send me new versions :)
 
 ##Code quality
 
-Please use ESLint with configuaration in `.eslintrc.json`.
+Please use ESLint with configuration in `.eslintrc.json`.
 
 ##FAQ:    
 
