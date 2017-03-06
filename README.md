@@ -52,10 +52,11 @@ and use it's api - but you will be able to develop without it.
 ##Getting started:
 
 1. Clone \ Fork this project
-2. Run `npm run build-dev` to build JS and CSS
-3. Open `index.html` browser (it will use mocked sheet data)
-3. Edit any HTML, JS and CSS from `/src`!
-4. Please send me new versions :)
+2. Run `npm install` to install all dependencies
+3. Run `npm run build-dev` to build JS and CSS
+4. Open `index.html` browser (it will use mocked sheet data)
+5. Edit any HTML, JS and CSS from `/src`!
+6. Please send me new versions :)
 
 ##Code quality
 
