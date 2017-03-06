@@ -13,6 +13,7 @@ const
   skillsSec     = require('./secondary/skills.json'),
   talentsSec    = require('./secondary/talents.json'),
   flaws         = require('./flaws.json'),
+  mock          = require('./mock.json'),
   merits        = require('./merits.json');
 
 module.exports = {
@@ -26,6 +27,7 @@ module.exports = {
   physical,
   social,
   nature,
+  mock,
   demeanor: nature,
   secondary: {knowledges: knowledgesSec, skills: skillsSec, talents: talentsSec},
   flaws,

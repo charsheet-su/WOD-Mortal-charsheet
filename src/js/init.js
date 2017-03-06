@@ -2,43 +2,31 @@ const Promise        = require('bluebird'),
       $              = require('jquery'),
       sheetData      = require('../../data/index'),
       requestPromise = require('request-promise'),
+      isDevel        = (window.location.href.indexOf('charsheet.su/') === -1),
+      isRevision     = (window.location.pathname.split('/').length === 6),
       viewModes      = {edit: 0};
-/**
- * check if script is running from development environment
- * @return {boolean}
- */
-function checkDevel() {
-  return (window.location.href.indexOf('charsheet.su/') === -1);
-}
 
-// if (typeof ifRevision === 'undefined') {
-const ifRevision = ()=> {
-  const pathname = window.location.pathname;
-  const path = pathname.split('/');
-  return (path.length === 6);
-};
-// }
 
 /**
  * just a little something to show while loading
  * @type {{show, hide}}
  */
 const loadingPannel = (function loadingPannel() {
-  const lpDialog = $('' +
-    "<div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>" +
-    "<div class='modal-dialog' >" +
-    "<div class='modal-content'>" +
-    "<div class='modal-header'><b>Loading...</b></div>" +
-    "<div class='modal-body'>" +
-    "<div class='progress'>" +
-    "<div class='progress-bar progress-bar-striped active' role='progressbar' aria-valuenow='100' aria-valuemin='100' aria-valuemax='100' style='width:100%'> " +
-    'Please Wait...' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>');
+  const lpDialog = $(`
+    <div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>
+    <div class='modal-dialog' >
+    <div class='modal-content'>
+    <div class='modal-header'><b>Loading...</b></div>
+    <div class='modal-body'>
+    <div class='progress'>
+    <div class='progress-bar progress-bar-striped active' role='progressbar' aria-valuenow='100' aria-valuemin='100' aria-valuemax='100' style='width:100%'>
+    Please Wait...
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>`);
   return {
     show() {
       lpDialog.modal('show');
@@ -54,22 +42,21 @@ const loadingPannel = (function loadingPannel() {
  * @type {{show, hide}}
  */
 const ErrorPannel = (function ErrorPannel() {
-  const lpDialog = $('' +
-    "<div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>" +
-    "<div class='modal-dialog' >" +
-    "<div class='modal-content'>" +
-    "<div class='modal-header'><b>Error!</b></div>" +
-    "<div class='modal-body'>" +
-    "<div class='alert alert-danger' role='alert'> " +
-    'Some error text' +
-    '</div>' +
-    "<div class='modal-footer'>" +
-    "<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>" +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>');
+  const lpDialog = $(`<div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>
+    <div class='modal-dialog' >
+    <div class='modal-content'>
+    <div class='modal-header'><b>Error!</b></div>
+    <div class='modal-body'>
+    <div class='alert alert-danger' role='alert'>
+    Some error text
+    </div>
+    <div class='modal-footer'>
+    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>`);
   return {
     show(error) {
 
@@ -87,35 +74,14 @@ function sendDots(attr, value) {
   // var data = {};
   // attr=attr.replace('[','%5B').replace(']','%5D');
   // data[attr] = value;
-  if (checkDevel()) {
+  if (isDevel) {
     console.log(`Saving ${attr} = ${value}`);
     return;
   }
-  if (ifRevision()) {
+  if (isRevision) {
     ErrorPannel.show('You can not edit revision data! If you want it - restore revision and edit it.');
     return;
   }
-  /*
-   const formData = new FormData();
-   formData.append('name', attr);
-   formData.append('value', value);
-   $.ajax({
-   url: '/api/save/',
-   formData,
-   contentType: false,
-   processData: false,
-   type: 'POST',
-   success(data) {
-   console.info(data);
-   if (data.error !== undefined) {
-   ErrorPannel.show(data.error);
-
-   }
-   },
-   error(data) {
-   alert(`Error saving ${attr}!`);
-   },
-   });*/
   const options = {
     method: 'POST',
     uri: `${location.protocol}//${window.location.hostname}/api/save/`,
@@ -123,26 +89,21 @@ function sendDots(attr, value) {
       name: attr, value,
     },
     json: true,
-    headers: {
-      /* 'content-type': 'application/x-www-form-urlencoded' */ // Set automatically
-    },
+    headers: {},
   };
 
   requestPromise(options)
     .then((data)=> {
-
       if (data.error !== undefined) {
-        ErrorPannel.show(data.error);
-
+        ErrorPannel.show(`Error sending dots: ${data.error}`);
       }
       // POST succeeded...
     })
     .catch((err)=> {
-      ErrorPannel.show(JSON.stringify(err));
+      ErrorPannel.show(`Error sending dots: ${JSON.stringify(err)}`);
       // POST failed...
     });
 }
-window.sendDots = sendDots;
 
 function createDots(mainContainer, name, elClass, caption, points) {
   elClass = elClass || 'attr';
@@ -259,9 +220,11 @@ function loadTraits() {
     sheetData.secondary.skills,
     sheetData.secondary.knowledges];
   const res = [];
-  $.each(list, (index, items) => {
+  list.forEach((items)=> {
+    // $.each(list, (index, items) => {
     res.push({text: '---'});
-    $.each(items, (i, item) => { // only take item index. could be a simple loop
+    // $.each(items, (i, item) => { // only take item index. could be a simple loop
+    items.forEach((item)=> {
       res.push({text: item, value: item});
     });
   });
@@ -302,7 +265,7 @@ function setDotsFields() {
 
 function setEditableFields() {
   // defaults
-  if (checkDevel()) { // just display message about saving
+  if (isDevel) { // just display message about saving
     $.fn.editable.defaults.success = function (response, newValue) {
       console.log(`Saving ${$(this).attr('data-name')} = ${newValue}`);
     };
@@ -311,7 +274,7 @@ function setEditableFields() {
     $.fn.editable.defaults.mode = 'popup';
     $.fn.editable.defaults.success = function (response, newValue) {
       if (response.error !== undefined) {
-        ErrorPannel.show(response.error);
+        ErrorPannel.show(`Error saving data: ${response.error}`);
       }
       return response;
     };
@@ -319,11 +282,11 @@ function setEditableFields() {
 
   $.fn.editable.defaults.validate = (value)=> {
 
-    if (checkDevel()) {
+    if (isDevel) {
       return null;// nothing to do for local development
     }
 
-    if (ifRevision()) {
+    if (isRevision) {
       return 'You can not edit revision data! If you want it - restore revision and edit it.';
     }
     return null;
@@ -402,59 +365,68 @@ function setEditableFields() {
   }());
 }
 
-function loadSaved() {
-  if (checkDevel()) {
+function fetchSavedData() {
+
+  if (isDevel) {
     // do not load for development environment
-    return Promise.resolve();
+    return Promise.resolve(sheetData.mock);
   }
   const options = {
     uri: `${location.protocol}//${window.location.hostname}/api/load`,
     json: true, // Automatically parses the JSON string in the response
   };
 
-  return requestPromise(options)
-    .then((data)=> {
-        if (data.error !== undefined) {
-          ErrorPannel.show(data.error);
-          return;
-        }
-        $.each(data, (index, val) => {
-            if (index === 'char_name') {
-              document.title = `${val} - CharSheet.su`;
-            }
-            if (index === 'character_sketch') {
-              $('img[class="character_sketch"]').attr('src', val).css('display', 'block');
-            }
-            if (index === 'group_chart') {
-              $('img[class="group_chart"]').attr('src', val).css('display', 'block');
-            }
-            // load editables
-
-            let a = $(`span[data-name="${index}"]`);
-            if (a !== undefined && val) {
-              a.editable('setValue', val);
-            }
-
-            // try to set dots
-            a = $(`select[name="${index}"]`);
-
-            if (a !== undefined && a.is('select')) {
-              // console.log(`Setting select  ${index} to value ${val}`);
-              a.val(val).change();
-
-              a.barrating('set', val);
-            }
-          },
-        );
-      },
-    )
-    .catch(err=>ErrorPannel.show(JSON.stringify(err)));
+  return requestPromise(options);
 }
 
-window.loadSaved = loadSaved;
+function loadSaved() {
+  fetchSavedData().then((data)=> {
+      if (data.error !== undefined) {
+        ErrorPannel.show(`Error fetching data: ${data.error}`);
+        return;
+      }
+      const keys = Object.keys(data);
+      keys.forEach((index)=> {
+          const val = data[index];
+          // Array.from(data).forEach((val, index)=> {
+          // $.each(data, (index, val) => {
+          if (index === 'char_name') {
+            document.title = `${val} - CharSheet.su`;
+          }
+          if (index === 'character_sketch') {
+            $('img[class="character_sketch"]').attr('src', val).css('display', 'block');
+          }
+          if (index === 'group_chart') {
+            $('img[class="group_chart"]').attr('src', val).css('display', 'block');
+          }
+          // load editables
+
+          let a = $(`span[data-name="${index}"]`);
+          if (a !== undefined && val) {
+            a.editable('setValue', val);
+          }
+
+          // try to set dots
+          a = $(`select[name="${index}"]`);
+
+          if (a !== undefined && a.is('select')) {
+            // console.log(`Setting select  ${index} to value ${val}`);
+            a.val(val).change();
+
+            a.barrating('set', val);
+          }
+        },
+      );
+    },
+  )
+    .catch(err=>
+      ErrorPannel.show(`Error fetching data: ${err.toString()}`),
+    );
+}
+
 
 function loadUseful() {
-  if (checkDevel()) {
+  if (isDevel) {
     return Promise.resolve();
   }// do not load for development environment
 
@@ -595,6 +567,8 @@ function changeMode(mode) {
 }
 
 window.changeMode = changeMode;
+window.sendDots = sendDots;
+window.loadSaved = loadSaved;
 
 $(document).ready(() => {
   loadAll();
