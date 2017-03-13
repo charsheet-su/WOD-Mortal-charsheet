@@ -1,6 +1,8 @@
 # WOD-Mortal-charsheet
 
 [![Build Status](https://travis-ci.org/jehy/WOD-Mortal-charsheet.svg?branch=master)](https://travis-ci.org/jehy/WOD-Mortal-charsheet)
+[![dependencies Status](https://david-dm.org/jehy/WOD-Mortal-charsheet/status.svg)](https://david-dm.org/jehy/WOD-Mortal-charsheet)
+[![devDependencies Status](https://david-dm.org/jehy/WOD-Mortal-charsheet/dev-status.svg)](https://david-dm.org/jehy/WOD-Mortal-charsheet?type=dev)
 
 It is the first character sheet, created for [Charsheet.su](http://charsheet.su).   
 It is based on wonderful [Mr Gone's character sheets](http://mrgone.rocksolidshells.com/) 
