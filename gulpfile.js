@@ -13,6 +13,10 @@ const gulp        = require('gulp'),
 
 const concat = require('gulp-concat');
 
+gulp.task('copy-fonts', ()=> {
+  gulp.src(['./node_modules/bootstrap/fonts/*']).pipe(gulp.dest('lib/fonts'));
+});
+
 gulp.task('build-scripts-dev', ()=>
   browserify({entries: './src/js/index.js', debug: true})
     .transform(babelify, {presets: ['es2015']})
@@ -74,10 +78,10 @@ gulp.task('clean-scripts', ()=>
   ]));
 
 gulp.task('build-prod', ()=> {
-  runSequence(['clean-css', 'clean-scripts'], ['build-css-prod', 'build-scripts-prod']);
+  runSequence(['clean-css', 'clean-scripts'], ['build-css-prod', 'build-scripts-prod', 'copy-fonts']);
 });
 gulp.task('build-dev', ()=> {
-  runSequence(['clean-css', 'clean-scripts'], ['build-css-dev', 'build-scripts-dev']);
+  runSequence(['clean-css', 'clean-scripts'], ['build-css-dev', 'build-scripts-dev', 'copy-fonts']);
 });
 
 gulp.task('default', ['build']);
