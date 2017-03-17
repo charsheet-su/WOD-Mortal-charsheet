@@ -8,7 +8,7 @@ It is the first character sheet, created for [Charsheet.su](http://charsheet.su)
 It is based on wonderful [Mr Gone's character sheets](http://mrgone.rocksolidshells.com/) 
  so credit for design goes to him.
 
-##What I used for this character sheet:
+## What I used for this character sheet:
 
 - JQuery   
 - Bootstrap 3   
@@ -23,7 +23,16 @@ Version of this sheet without node.js can be found
 You are free to fork this repository, make pull requests and
 make new character sheets - of cause, those will be added to web site.
 
-##Contents of the project:
+## Extracting useful images from pdf
+If you want to use cool images and backgrounds from other character sheets, that's easy:
+```bash
+yum install poppler-utils
+pdfimages ./some.pdf
+yum install ImageMagick
+convert *.ppm *.png
+```
+
+## Contents of the project:
 * `/src` contains source code and css of th project
 * `/lib` contains built and minified version of code (after you build it)
 * `data` - folder for json files which contain data for this sheet -
@@ -50,7 +59,7 @@ Of cause, for saving and loading your character sheet data you will need
  to publish your repository on [Charsheet.su](http://charsheet.su)
 and use it's api - but you will be able to develop without it.
 
-##Getting started:
+## Getting started:
 
 1. Clone \ Fork this project
 2. Run `npm install` to install all dependencies
@@ -59,11 +68,11 @@ and use it's api - but you will be able to develop without it.
 5. Edit any HTML, JS and CSS from `/src`!
 6. Please send me new versions :)
 
-##Code quality
+## Code quality
 
 Please use ESLint with configuration in `.eslintrc.json`.
 
-##FAQ:    
+## FAQ:    
 
 Q: Why do you use images instead of backgrounds?   
 A: Because otherwise browsers don't allow to print background.   
