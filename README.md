@@ -15,7 +15,7 @@ It is based on wonderful [Mr Gone's character sheets](http://mrgone.rocksolidshe
 - [X-editable](https://vitalets.github.io/x-editable/)   
 - [Jquery bar rating](http://antenna.io/demo/jquery-bar-rating/examples/)
 
-Latest version is built using Node.js, gulp, broserify and babel. If you don`t know
+Latest version is built using Node.js and webpack. If you don`t know
 Node.js, you can make your own sheet in simple HTML, CSS and JS.
 
 Version of this sheet without node.js can be found 
@@ -34,7 +34,7 @@ convert *.ppm *.png
 
 ## Contents of the project:
 * `/src` contains source code and css of th project
-* `/lib` contains built and minified version of code (after you build it)
+* `/dist` contains built and minified version of code (after you build it)
 * `data` - folder for json files which contain data for this sheet -
  for example, list of traits, attributes or skills.
  Also contains `mock.json` - mock sheet data for testing.
@@ -43,7 +43,6 @@ convert *.ppm *.png
 
 Contents of `/src`:
 * `css`
-  * `x-editable` - X-editable css without any modifications.
   * `custom` - CSS files for this character sheet.
     * `charlist.css` - global css.
     * `dots.css` - css for displaying dots. Suddenly, yeah?
@@ -52,7 +51,6 @@ Contents of `/src`:
 * `js` - different javascript.
   * `images.js` - used for handling images - uploading, removing.
   * `jquery.barrating.js` - JQuery bar rating, modified for printing.
-  * `x-editable` - X-editable js without any modifications.
   * `index.js` - combines all js above.
   
 Of cause, for saving and loading your character sheet data you will need
