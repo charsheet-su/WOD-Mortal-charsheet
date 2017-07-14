@@ -4,6 +4,8 @@
 [![dependencies Status](https://david-dm.org/jehy/WOD-Mortal-charsheet/status.svg)](https://david-dm.org/jehy/WOD-Mortal-charsheet)
 [![devDependencies Status](https://david-dm.org/jehy/WOD-Mortal-charsheet/dev-status.svg)](https://david-dm.org/jehy/WOD-Mortal-charsheet?type=dev)
 
+![screenshot](screenshot.png)
+
 It is the first character sheet, created for [Charsheet.su](http://charsheet.su).   
 It is based on wonderful [Mr Gone's character sheets](http://mrgone.rocksolidshells.com/) 
  so credit for design goes to him.
