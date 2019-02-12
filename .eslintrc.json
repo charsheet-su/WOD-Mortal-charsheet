@@ -1,17 +1,57 @@
 {
-  "env": {
-    "browser": true,
-    "node": true,
-    "mocha": false
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "script",
+    "ecmaFeatures": {
+      "jsx": false
+    }
   },
-  "extends": "airbnb",
+  "env": {
+    "browser": false,
+    "node": true,
+    "mocha": true
+  },
+  "extends": "airbnb-base",
+  "overrides": [
+    {
+      "files": [
+        "src/js/**/*.js"
+      ],
+      "env": {
+        "browser": true,
+        "node": true,
+        "jquery": true
+      },
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    }
+  ],
   "plugins": [
     "standard",
     "promise"
   ],
   "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "test/**.js",
+          "webpack.config",
+          "webpack.dev.js",
+          "webpack.prod.js",
+          "src/js/**/*.js"
+        ]
+      }
+    ],
+    "strict": "error",
+    "object-curly-newline": "off",
+    "prefer-destructuring": "warn",
     "one-var": "off",
-    "indent": "off",
+    "function-paren-newline": "off",
+    "no-mixed-operators": "off",
+    "arrow-body-style": "off",
+    "brace-style": "off",
     "padded-blocks": "off",
     "no-plusplus": "off",
     "arrow-spacing": "off",
@@ -20,8 +60,12 @@
     "no-unused-vars": "warn",
     "object-shorthand": "warn",
     "no-param-reassign": "warn",
-    "no-console": "warn",
-    "no-multi-spaces": "off",
+    "newline-per-chained-call": "off",
+    "no-continue": "off",
+    "max-len": [
+      "error",
+      140
+    ],
     "linebreak-style": [
       "error",
       "unix"

@@ -1,14 +1,18 @@
-const path               = require('path'),
-      HtmlWebpackPlugin  = require('html-webpack-plugin'),
-      CleanWebpackPlugin = require('clean-webpack-plugin'),
-      webpack            = require('webpack'),
-      ExtractTextPlugin  = require('extract-text-webpack-plugin');
+'use strict';
+
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: './src/js/index.js',
   devtool: 'source-map',
   cache: true,
+  mode: 'development',
   plugins: [
+    new webpack.ProvidePlugin({$: 'jquery', jQuery: 'jquery' }),
     new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(ru|en)$/), // https://github.com/webpack/webpack/issues/87
     new ExtractTextPlugin('styles.css'),
     new CleanWebpackPlugin(['dist']),

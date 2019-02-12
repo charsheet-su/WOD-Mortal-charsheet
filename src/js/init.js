@@ -1,10 +1,11 @@
-const Promise        = require('bluebird'),
-      $              = require('jquery'),
-      sheetData      = require('../../data/index'),
-      requestPromise = require('request-promise'),
-      isDevel        = (window.location.href.indexOf('charsheet.su/') === -1),
-      isRevision     = (window.location.pathname.split('/').length === 6),
-      viewModes      = {edit: 0};
+const Promise = require('bluebird');
+const $ = require('jquery');
+const requestPromise = require('request-promise');
+const sheetData = require('../../data/index');
+
+const isDevel = (window.location.href.indexOf('charsheet.su/') === -1);
+const isRevision = (window.location.pathname.split('/').length === 6);
+const viewModes = {edit: 0};
 
 
 /**
@@ -19,7 +20,8 @@ const loadingPannel = (function loadingPannel() {
     <div class='modal-header'><b>Loading...</b></div>
     <div class='modal-body'>
     <div class='progress'>
-    <div class='progress-bar progress-bar-striped active' role='progressbar' aria-valuenow='100' aria-valuemin='100' aria-valuemax='100' style='width:100%'>
+    <div class='progress-bar progress-bar-striped active' role='progressbar'
+     aria-valuenow='100' aria-valuemin='100' aria-valuemax='100' style='width:100%'>
     Please Wait...
     </div>
     </div>
@@ -84,7 +86,7 @@ function sendDots(attr, value) {
   }
   const options = {
     method: 'POST',
-    uri: `${location.protocol}//${window.location.hostname}/api/save/`,
+    uri: `${window.location.protocol}//${window.location.hostname}/api/save/`,
     form: {
       name: attr, value,
     },
@@ -337,8 +339,8 @@ function setEditableFields() {
     for (let x = 0; x < 4; x++) {
       const tr = $('<tr></tr>');
       for (let y = 0; y < 7; y++) {
-        const span = $(`<span data-name="combat[${x}][${y}]"  data-emptyclass=""` +
-          ' data-type="text" data-pk="1" data-emptytext="None" data-title="Enter"></span>');
+        const span = $(`<span data-name="combat[${x}][${y}]"  data-emptyclass=""`
+          + ' data-type="text" data-pk="1" data-emptytext="None" data-title="Enter"></span>');
         const td = $('<td>&nbsp;</td>');
         span.editable();
         td.append(span);
@@ -353,8 +355,8 @@ function setEditableFields() {
     for (let x = 0; x < 2; x++) {
       const tr = $('<tr></tr>');
       for (let y = 0; y < 7; y++) {
-        const span = $(`<span data-name="armor[${x}][${y}]"  data-emptyclass=""` +
-          ' data-type="text" data-pk="1" data-emptytext="None" data-title="Enter"></span>');
+        const span = $(`<span data-name="armor[${x}][${y}]"  data-emptyclass=""`
+          + ' data-type="text" data-pk="1" data-emptytext="None" data-title="Enter"></span>');
         const td = $('<td>&nbsp;</td>');
         span.editable();
         td.append(span);
@@ -372,7 +374,7 @@ function fetchSavedData() {
     return Promise.resolve(sheetData.mock);
   }
   const options = {
-    uri: `${location.protocol}//${window.location.hostname}/api/load`,
+    uri: `${window.location.protocol}//${window.location.hostname}/api/load`,
     json: true, // Automatically parses the JSON string in the response
   };
 
@@ -381,46 +383,45 @@ function fetchSavedData() {
 
 function loadSaved() {
   fetchSavedData().then((data)=> {
-      if (data.error !== undefined) {
-        ErrorPannel.show(`Error fetching data: ${data.error}`);
-        return;
+    if (data.error !== undefined) {
+      ErrorPannel.show(`Error fetching data: ${data.error}`);
+      return;
+    }
+    const keys = Object.keys(data);
+    keys.forEach((index)=> {
+      const val = data[index];
+      // Array.from(data).forEach((val, index)=> {
+      // $.each(data, (index, val) => {
+      if (index === 'char_name') {
+        document.title = `${val} - CharSheet.su`;
       }
-      const keys = Object.keys(data);
-      keys.forEach((index)=> {
-          const val = data[index];
-          // Array.from(data).forEach((val, index)=> {
-          // $.each(data, (index, val) => {
-          if (index === 'char_name') {
-            document.title = `${val} - CharSheet.su`;
-          }
-          if (index === 'character_sketch') {
-            $('img[class="character_sketch"]').attr('src', val).css('display', 'block');
-          }
-          if (index === 'group_chart') {
-            $('img[class="group_chart"]').attr('src', val).css('display', 'block');
-          }
-          // load editables
+      if (index === 'character_sketch') {
+        $('img[class="character_sketch"]').attr('src', val).css('display', 'block');
+      }
+      if (index === 'group_chart') {
+        $('img[class="group_chart"]').attr('src', val).css('display', 'block');
+      }
+      // load editables
 
-          let a = $(`span[data-name="${index}"]`);
-          if (a !== undefined && val) {
-            a.editable('setValue', val);
-          }
+      let a = $(`span[data-name="${index}"]`);
+      if (a !== undefined && val) {
+        a.editable('setValue', val);
+      }
 
-          // try to set dots
-          a = $(`select[name="${index}"]`);
+      // try to set dots
+      a = $(`select[name="${index}"]`);
 
-          if (a !== undefined && a.is('select')) {
-            // console.log(`Setting select  ${index} to value ${val}`);
-            a.val(val).change();
+      if (a !== undefined && a.is('select')) {
+        // console.log(`Setting select  ${index} to value ${val}`);
+        a.val(val).change();
 
-            a.barrating('set', val);
-          }
-        },
-      );
+        a.barrating('set', val);
+      }
     },
+    );
+  },
   )
-    .catch(err=>
-      ErrorPannel.show(`Error fetching data: ${err.toString()}`),
+    .catch(err=> ErrorPannel.show(`Error fetching data: ${err.toString()}`),
     );
 }
 
@@ -432,7 +433,7 @@ function loadUseful() {
 
 
   const options = {
-    uri: `${location.protocol}//${window.location.hostname}/js/useful.php`,
+    uri: `${window.location.protocol}//${window.location.hostname}/js/useful.php`,
     json: false, // Automatically parses the JSON string in the response
   };
 
@@ -440,8 +441,7 @@ function loadUseful() {
     .then((data)=> {
       $('.useful_things').html(data);
     })
-    .catch(err=>
-      alert(`Error loading useful things! ${JSON.stringify(err)}`));
+    .catch(err=> alert(`Error loading useful things! ${JSON.stringify(err)}`));
 }
 
 

@@ -10,7 +10,7 @@ function readURL(input, to) {
 
   /* reader.onload = function (e) {
    $('.' + to).attr('src', e.target.result);
-   }*/
+   } */
 
   reader.readAsDataURL(input.files[0]);
   formdata.append('images', input.files[0]);
