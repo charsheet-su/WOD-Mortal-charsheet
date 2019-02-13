@@ -126,8 +126,11 @@ function createDots(mainContainer, name, elClass, caption, points) {
   div2.append(select);
 
   div2.find('select').barrating('show', {
-    wrapperClass: 'br-wrapper-f',
+    theme: 'wod-dots',
     showSelectedRating: false,
+    allowEmpty: true,
+    deselectable: true,
+    silent: true,
     onSelect(value, text) {
       sendDots(name, value);
     },
@@ -238,8 +241,11 @@ function loadTraits() {
 function setDotsFields() {
 
   $('select[name="Humanity"]').barrating('show', {
-    wrapperClass: 'br-wrapper-f',
-    showSelectedRating: false,
+    theme: 'wod-dots',
+    silent: true,
+    allowEmpty: true,
+    deselectable: true,
+    showSelectedRating: false, // append a div with a rating to the widget?
     onSelect(value, text) {
       sendDots('Humanity', value);
     },
@@ -247,16 +253,22 @@ function setDotsFields() {
 
 
   $('select[name="Willpower"]').barrating('show', {
-    wrapperClass: 'br-wrapper-f',
-    showSelectedRating: false,
+    theme: 'wod-dots',
+    silent: true,
+    allowEmpty: true,
+    deselectable: true,
+    showSelectedRating: false, // append a div with a rating to the widget?
     onSelect(value, text) {
       sendDots('Willpower', value);
     },
   });
 
   $('select[name="Willpower_current"]').barrating('show', {
-    wrapperClass: 'br-wrapper-f2',
-    showSelectedRating: false,
+    theme: 'wod-checkbox',
+    silent: true,
+    allowEmpty: true,
+    deselectable: true,
+    showSelectedRating: false, // append a div with a rating to the widget?
     selectedImage: 'img/checkbox_big_1.png',
     unSelectedImage: 'img/checkbox_big_0.png',
     onSelect(value, text) {
@@ -511,8 +523,11 @@ function showDots(container) {
     if (a.attr('class') !== 'br-widget') {
       $(this).parent().css('display', 'inline-block');
       $(this).parent().barrating('show', {
-        wrapperClass: 'br-wrapper-f',
-        showSelectedRating: false,
+        theme: 'wod-dots',
+        silent: true,
+        allowEmpty: true,
+        deselectable: true,
+        showSelectedRating: false, // append a div with a rating to the widget?
         onSelect(value, text) {
           sendDots($(this).parent().attr('name'), value);
         },
