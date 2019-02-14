@@ -7,7 +7,6 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 
-
 module.exports = {
   entry: './src/js/index.js',
   devtool: 'source-map',
@@ -42,7 +41,7 @@ module.exports = {
   module: {
     rules: [{
       test: /\.js$/,
-      exclude: /node_modules/,
+      // exclude: /node_modules/,
       use: {
         loader: 'babel-loader',
         options: {
