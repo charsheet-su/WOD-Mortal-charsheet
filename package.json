@@ -1,6 +1,6 @@
 {
   "name": "charsheet-mortal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Charsheet.su - character sheet for mortal",
   "keywords": [
     "mortal",
@@ -32,6 +32,7 @@
     "select2": "^4.0.6-rc.1",
     "typeahead.js": "^0.11.1",
     "vanilla-lazyload": "^10.20.0",
+    "wod-data-human": "git+https://github.com/charsheet-su/wod-data-human.git#0.0.1",
     "x-editable": "^1.5.1"
   },
   "devDependencies": {

@@ -1,12 +1,28 @@
 const Promise = require('bluebird');
 const $ = require('jquery');
 const requestPromise = require('request-promise');
-const sheetData = require('../../data/index');
+const sheetData = require('wod-data-human');
+const mockData = require('../../data/mock.json');
 
 const isDevel = (window.location.href.indexOf('charsheet.su/') === -1);
 const isRevision = (window.location.pathname.split('/').length === 6);
 const viewModes = {edit: 0};
 
+function barratingValidator(value) {
+
+  if (isDevel) {
+    return null;// nothing to do for local development
+  }
+
+  if (isRevision) {
+    return 'You can not edit revision data! If you want it - restore revision and edit it.';
+  }
+  return null;
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 /**
  * just a little something to show while loading
@@ -131,6 +147,7 @@ function createDots(mainContainer, name, elClass, caption, points) {
     allowEmpty: true,
     deselectable: true,
     silent: true,
+    validate: barratingValidator,
     onSelect(value, text) {
       sendDots(name, value);
     },
@@ -146,7 +163,6 @@ function setData(list, elClass, mainContainer) {
       $(mainContainer).append(createDots($(mainContainer), list[i][n], elClass, list[i][n]));
     }
   }
-  return Promise.resolve();
 }
 
 // load data with editable name
@@ -170,7 +186,6 @@ function loadProps(json, title, field, container, dots) {
     $(container).append(div2);
     createDots($(container), `${field}_value[${i}]`, field, undefined, dots);
   }
-  return Promise.resolve();
 }
 
 
@@ -193,7 +208,6 @@ function setTraits(secondary) {
     $('.other_traits').append(div2);
     createDots($('.other_traits'), `trait_value[${i}]`, 'trait');
   }
-  return Promise.resolve();
 }
 
 function loadCustomProps() {
@@ -217,7 +231,6 @@ function loadCustomProps() {
     createDots(div0, `custom_prop_value[${i}]`, 'custom_prop', undefined, 7);
     $('.custom_props').append(div0);
   }
-  return Promise.resolve();
 }
 
 function loadTraits() {
@@ -233,7 +246,7 @@ function loadTraits() {
       res.push({text: item, value: item});
     });
   });
-  return setTraits(res);
+  setTraits(res);
 }
 
 
@@ -244,6 +257,7 @@ function setDotsFields() {
     theme: 'wod-dots',
     silent: true,
     allowEmpty: true,
+    validate: barratingValidator,
     deselectable: true,
     showSelectedRating: false, // append a div with a rating to the widget?
     onSelect(value, text) {
@@ -256,6 +270,7 @@ function setDotsFields() {
     theme: 'wod-dots',
     silent: true,
     allowEmpty: true,
+    validate: barratingValidator,
     deselectable: true,
     showSelectedRating: false, // append a div with a rating to the widget?
     onSelect(value, text) {
@@ -267,6 +282,7 @@ function setDotsFields() {
     theme: 'wod-checkbox',
     silent: true,
     allowEmpty: true,
+    validate: barratingValidator,
     deselectable: true,
     showSelectedRating: false, // append a div with a rating to the widget?
     selectedImage: 'img/checkbox_big_1.png',
@@ -293,18 +309,6 @@ function setEditableFields() {
       return response;
     };
   }
-
-  $.fn.editable.defaults.validate = (value)=> {
-
-    if (isDevel) {
-      return null;// nothing to do for local development
-    }
-
-    if (isRevision) {
-      return 'You can not edit revision data! If you want it - restore revision and edit it.';
-    }
-    return null;
-  };
 
   $('span[data-name="experience"]').editable({
     emptytext: '&nbsp;',
@@ -383,7 +387,7 @@ function fetchSavedData() {
 
   if (isDevel) {
     // do not load for development environment
-    return Promise.resolve(sheetData.mock);
+    return Promise.resolve(mockData);
   }
   const options = {
     uri: `${window.location.protocol}//${window.location.hostname}/api/load`,
@@ -394,46 +398,51 @@ function fetchSavedData() {
 }
 
 function loadSaved() {
-  fetchSavedData().then((data)=> {
-    if (data.error !== undefined) {
-      ErrorPannel.show(`Error fetching data: ${data.error}`);
-      return;
-    }
-    const keys = Object.keys(data);
-    keys.forEach((index)=> {
-      const val = data[index];
-      // Array.from(data).forEach((val, index)=> {
-      // $.each(data, (index, val) => {
-      if (index === 'char_name') {
-        document.title = `${val} - CharSheet.su`;
+  return fetchSavedData()
+    .then((data)=> {
+      if (!data) {
+        ErrorPannel.show('Error fetching data: no data');
+        return;
       }
-      if (index === 'character_sketch') {
-        $('img[class="character_sketch"]').attr('src', val).css('display', 'block');
+      if (data.error !== undefined) {
+        ErrorPannel.show(`Error fetching data: ${data.error}`);
+        return;
       }
-      if (index === 'group_chart') {
-        $('img[class="group_chart"]').attr('src', val).css('display', 'block');
-      }
-      // load editables
+      const keys = Object.keys(data);
+      keys.forEach((index)=> {
+        const val = data[index];
+        // Array.from(data).forEach((val, index)=> {
+        // $.each(data, (index, val) => {
+        if (index === 'char_name') {
+          document.title = `${val} - CharSheet.su`;
+        }
+        if (index === 'character_sketch') {
+          $('img[class="character_sketch"]').attr('src', val).css('display', 'block');
+        }
+        if (index === 'group_chart') {
+          $('img[class="group_chart"]').attr('src', val).css('display', 'block');
+        }
+        // load editables
 
-      let a = $(`span[data-name="${index}"]`);
-      if (a !== undefined && val) {
-        a.editable('setValue', val);
-      }
+        let a = $(`span[data-name="${index}"]`);
+        if (a !== undefined && val) {
+          a.editable('setValue', val);
+        }
 
-      // try to set dots
-      a = $(`select[name="${index}"]`);
+        // try to set dots
+        a = $(`select[name="${index}"]`);
 
-      if (a !== undefined && a.is('select')) {
+        if (a !== undefined && a.is('select')) {
         // console.log(`Setting select  ${index} to value ${val}`);
-        a.val(val).change();
+          a.val(val).change();
 
-        a.barrating('set', val);
-      }
+          a.barrating('set', val);
+        }
+      },
+      );
     },
-    );
-  },
-  )
-    .catch(err=> ErrorPannel.show(`Error fetching data: ${err.toString()}`),
+    )
+    .catch(err=> ErrorPannel.show(`Error fetching data: ${err}`),
     );
 }
 
@@ -460,50 +469,46 @@ function loadUseful() {
 function loadAll() {
   loadingPannel.show();
   setEditableFields();
-  let promises = [];
 
-  let a = setData([sheetData.talents, sheetData.skills, sheetData.knowledges], 'abl', '.abilities');
-  promises.push(a);
+  setData([sheetData.talents, sheetData.skills, sheetData.knowledges], 'abl', '.abilities');
 
-  a = setData([sheetData.physical, sheetData.social, sheetData.mental], 'attr', '.attributes');
-  promises.push(a);
+  setData([sheetData.physical, sheetData.social, sheetData.mental], 'attr', '.attributes');
 
 
-  a = setData([sheetData.virtues], 'virtue', '.virtues');
-  promises.push(a);
+  setData([sheetData.virtues], 'virtue', '.virtues');
 
-  a = loadProps(sheetData.numina, 'numina', 'numina', '.numina');
-  promises.push(a);
+  loadProps(sheetData.numina, 'numina', 'numina', '.numina');
 
-  a = loadProps(sheetData.backgrounds, 'background', 'background', '.backgrounds');
-  promises.push(a);
+  loadProps(sheetData.backgrounds, 'background', 'background', '.backgrounds');
 
-  a = loadTraits();
-  promises.push(a);
+  loadTraits();
 
-  a = loadProps(sheetData.merits, 'merit', 'merit', '.merits', 7);
-  promises.push(a);
+  const meritsFormatted = Object.keys(sheetData.merits).reduce((res, type)=>{
+    res.push('--');
+    res.push(`${capitalizeFirstLetter(type)}:`);
+    res = res.concat(sheetData.merits[type]);
+    return res;
+  }, []);
+  loadProps(meritsFormatted, 'merit', 'merit', '.merits', 7);
 
-  a = loadProps(sheetData.flaws, 'flaw', 'flaw', '.flaws', 7);
-  promises.push(a);
+  const flawsFormatted = Object.keys(sheetData.flaws).reduce((res, type)=>{
+    res.push('--');
+    res.push(`${capitalizeFirstLetter(type)}:`);
+    res = res.concat(sheetData.flaws[type]);
+    return res;
+  }, []);
+  loadProps(flawsFormatted, 'flaw', 'flaw', '.flaws', 7);
 
-  a = loadCustomProps();
-  promises.push(a);
+  loadCustomProps();
 
 
-  // when all settings are loaded, we load charsheet data:
-  Promise.all(promises).then(() => {
-    promises = [];
-    a = loadSaved();
-    promises.push(a);
-    loadUseful();// load bottom panel
+  loadUseful();// load bottom panel
 
-    Promise.all(promises).then(() => {
-      // when everything is loaded, we display it
-      setDotsFields();
-      loadingPannel.hide();
-      $('.list-align').css('display', 'block');
-    });
+  loadSaved().then(() => {
+    // when everything is loaded, we display it
+    setDotsFields();
+    loadingPannel.hide();
+    $('.list-align').css('display', 'block');
   });
 }
 
@@ -525,6 +530,7 @@ function showDots(container) {
       $(this).parent().barrating('show', {
         theme: 'wod-dots',
         silent: true,
+        validate: barratingValidator,
         allowEmpty: true,
         deselectable: true,
         showSelectedRating: false, // append a div with a rating to the widget?
